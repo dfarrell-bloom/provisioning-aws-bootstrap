@@ -1,7 +1,14 @@
 #!/usr/bin/env ruby
 
-require 'uri'
+require 'json' 
+require 'aws-sdk'
 
-provisioning_role = ARGV[1]
+AWS.config(:credential_provider => AWS::Core::CredentialProviders::EC2Provider.new)
 
-creds `curl "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/#{URI.escape provisioning_role}"`
+provisioning_bucket = ARGV[0]
+
+s3 = AWS::S3.new( )
+
+s3.buckets[ provisioning_bucket ].objects.each do |obj|
+    puts obj.key
+end

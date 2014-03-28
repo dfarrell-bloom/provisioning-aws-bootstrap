@@ -3,6 +3,6 @@
 bash --login <<-eof
 rvm install ruby-2.1.0
 gem install bundler --no-ri --no-rdoc
-bundle install
+bundle install --deployment
 ./bootstrap.rb
 eof
