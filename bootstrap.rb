@@ -8,11 +8,14 @@ AWS.config(:credential_provider => AWS::Core::CredentialProviders::EC2Provider.n
 
 s3bucket = ARGV[0]
 s3object = ARGV[1]
-
+path     = "/opt/chef-solo/provisioning.git"
 s3 = AWS::S3.new()
 
-FileUtils.mkdir "/opt/provisioning.git"
-IO.popen( "tar xvjp -C /opt/provisioning.git", "w" ) do |p|
+
+
+FileUtils.rm_r path if File.exists? path
+FileUtils.mkdir_p path
+IO.popen( "tar xvjp -C '#{path}'", "w" ) do |p|
     s3.buckets[ s3bucket ].objects[ s3object ].read do |chunk|
 	p.write chunk
     end
